@@ -1,0 +1,369 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>IndentedLoggerAdapter API &mdash; Python Loger Indenter and Helper 0.9 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Python Loger Indenter and Helper 0.9 documentation" href="index.html" />
+    <link rel="prev" title="Advanced usage" href="advanced.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="advanced.html" title="Advanced usage"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Python Loger Indenter and Helper 0.9 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="indentedloggeradapter-api">
+<h1>IndentedLoggerAdapter API<a class="headerlink" href="#indentedloggeradapter-api" title="Permalink to this headline">¶</a></h1>
+<p>API Reference for the IndentedLoggerAdapter</p>
+<dl class="class">
+<dt id="python_log_indenter.IndentedLoggerAdapter">
+<em class="property">class </em><tt class="descclassname">python_log_indenter.</tt><tt class="descname">IndentedLoggerAdapter</tt><big>(</big><em>logger</em>, <em>extra=None</em>, <em>auto_add=True</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides the init and parameters from <a class="reference external" href="http://docs.python.org/library/logging.html#logging.Logger" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">logging.Logger</span></tt></a>, however adds it adds some functions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>auto_add</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; this controls how the indent is handled, if this is True (default) the indent is automatically
+added to the beginning of the message before it is passed to the logging engine.  If False, the indent is
+passed as part of the <a class="reference external" href="http://docs.python.org/library/logging.html#logging.LogRecord" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">logging.LogRecord</span></tt></a> as the parameter .indent_str.  this allows access to
+the indent by custom formatting commands if needed.</li>
+<li><strong>spaces</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Sets the number of spaces for each indent</li>
+<li><strong>indent_char</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Sets the character or string used for each indent space.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The other thing that this adds is the ability to chain some of the key methods so that it can be combined in
+single lines of code.  the methods that have been modified are:</p>
+<ul class="simple">
+<li><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.debug()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.info()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.warning()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.error()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.critical()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.exception()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.log()</span></tt></li>
+</ul>
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.a">
+<tt class="descname">a</tt><big>(</big><em>indent=1</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.a" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut method for <a class="reference internal" href="#python_log_indenter.IndentedLoggerAdapter.add" title="python_log_indenter.IndentedLoggerAdapter.add"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.add()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.add">
+<tt class="descname">add</tt><big>(</big><em>indent=1</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds this to the indent level</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>indent</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; the number to add to the indent level</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Self</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.getEffectiveLevel">
+<tt class="descname">getEffectiveLevel</tt><big>(</big><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.getEffectiveLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the effective level for the underlying logger.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.hasHandlers">
+<tt class="descname">hasHandlers</tt><big>(</big><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.hasHandlers" title="Permalink to this definition">¶</a></dt>
+<dd><p>See if the underlying logger has any handlers.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.i">
+<tt class="descname">i</tt><big>(</big><em>indent=0</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.i" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut method for <a class="reference internal" href="#python_log_indenter.IndentedLoggerAdapter.indent_set" title="python_log_indenter.IndentedLoggerAdapter.indent_set"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.indent_set()</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="python_log_indenter.IndentedLoggerAdapter.indent">
+<tt class="descname">indent</tt><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.indent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current indent level</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.indent_set">
+<tt class="descname">indent_set</tt><big>(</big><em>indent=0</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.indent_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the indent to this level</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>indent</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; the indent level</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Self</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.isEnabledFor">
+<tt class="descname">isEnabledFor</tt><big>(</big><em>level</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.isEnabledFor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this logger enabled for level &#8216;level&#8217;?</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.m">
+<tt class="descname">m</tt><big>(</big><em>key=None</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut method for <a class="reference internal" href="#python_log_indenter.IndentedLoggerAdapter.mem" title="python_log_indenter.IndentedLoggerAdapter.mem"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.mem()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.mc">
+<tt class="descname">mc</tt><big>(</big><em>key=None</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.mc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut method for <a class="reference internal" href="#python_log_indenter.IndentedLoggerAdapter.mem_clear" title="python_log_indenter.IndentedLoggerAdapter.mem_clear"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.mem_clear()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.mem">
+<tt class="descname">mem</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.mem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the current indent to the memory at location &#8220;key&#8221;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The key / name to pull from</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Self</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.mem_clear">
+<tt class="descname">mem_clear</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.mem_clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes (deletes) the memory location at the specified key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The key / name to delete.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Self</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.mem_save">
+<tt class="descname">mem_save</tt><big>(</big><em>key</em>, <em>indent=None</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.mem_save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves an indent to a specified memory key</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The key / name to save to</li>
+<li><strong>indent</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The indent to be saved, if None, this saves the current indent.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Self</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.ms">
+<tt class="descname">ms</tt><big>(</big><em>key=None</em>, <em>indent=None</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.ms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut method for <a class="reference internal" href="#python_log_indenter.IndentedLoggerAdapter.mem_save" title="python_log_indenter.IndentedLoggerAdapter.mem_save"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.mem_save()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.po">
+<tt class="descname">po</tt><big>(</big><em>name=None</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.po" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut method for <a class="reference internal" href="#python_log_indenter.IndentedLoggerAdapter.pop" title="python_log_indenter.IndentedLoggerAdapter.pop"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.pop()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.pop">
+<tt class="descname">pop</tt><big>(</big><em>name=None</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.pop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an indent to the top of a FILO queue.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> &#8211; <p>This behaives differently depending on what type of data is passed:</p>
+<dl class="docutils">
+<dt>int:</dt>
+<dd>If an int is passed, this will pop that many items from the top of the queue.</dd>
+<dt>str:</dt>
+<dd>If a string is passed, this will pop all items from the top of the queue until it reaches that named
+item.  if that item does not exist, it will raise a KeyError.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Self</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.pu">
+<tt class="descname">pu</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.pu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut method for <a class="reference internal" href="#python_log_indenter.IndentedLoggerAdapter.push" title="python_log_indenter.IndentedLoggerAdapter.push"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.push()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.push">
+<tt class="descname">push</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.push" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves an indent to the top of a FILO queue.</p>
+<p>This takes 0-2 arguments, if arguments are passed, the argument that is a string willl be used as the key,
+the argument that is an int will be used as the indent.  if two strings or two int&#8217;s are passed, unpredictable
+results will occur.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name to save to, if no string is passed, this will add an un-named item to the queue.</li>
+<li><strong>indent</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The indent to be saved, if None, this saves the current indent.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Self</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.s">
+<tt class="descname">s</tt><big>(</big><em>indent=1</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.s" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut method for <a class="reference internal" href="#python_log_indenter.IndentedLoggerAdapter.sub" title="python_log_indenter.IndentedLoggerAdapter.sub"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.sub()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.setLevel">
+<tt class="descname">setLevel</tt><big>(</big><em>level</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.setLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the specified level on the underlying logger.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="python_log_indenter.IndentedLoggerAdapter.sub">
+<tt class="descname">sub</tt><big>(</big><em>indent=1</em><big>)</big><a class="headerlink" href="#python_log_indenter.IndentedLoggerAdapter.sub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtracts this from the indent level</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>indent</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; the number to subtract from the indent level</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Self</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="advanced.html"
+                        title="previous chapter">Advanced usage</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/api.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="advanced.html" title="Advanced usage"
+             >previous</a> |</li>
+        <li><a href="index.html">Python Loger Indenter and Helper 0.9 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Dan Strohl.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

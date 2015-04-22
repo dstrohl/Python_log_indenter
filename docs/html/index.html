@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to Python Log Indenter documentation &mdash; Python Loger Indenter and Helper 0.9 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Python Loger Indenter and Helper 0.9 documentation" href="#" />
+    <link rel="next" title="Installation and initial setup" href="installation.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="installation.html" title="Installation and initial setup"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">Python Loger Indenter and Helper 0.9 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="welcome-to-python-log-indenter-documentation">
+<h1>Welcome to Python Log Indenter documentation<a class="headerlink" href="#welcome-to-python-log-indenter-documentation" title="Permalink to this headline">¶</a></h1>
+<p>This module helps by allowing you to indent the lines in your log entries to make it easier to read when you are dealing
+with complex loops and calls (especially with debug level logging)</p>
+<p>This subclasses a standard <a class="reference external" href="http://docs.python.org/library/logging.html#logging.LoggerAdapter" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">logging.LoggerAdapter</span></tt></a> and allows you to control the indent level of your message.</p>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and initial setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Basic usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#loading">Loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#changing-the-indent-level">Changing the indent level</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#push-pop">Push / Pop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#memories">Memories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#formatting">Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#shortcuts">Shortcuts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#changing-indent-size-and-indent-character">Changing indent size and indent character</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">IndentedLoggerAdapter API</a></li>
+</ul>
+</div>
+<p>This will allow you to turn logs that would normally look like this:</p>
+<div class="highlight-python"><div class="highlight"><pre>root    DEBUG   Loading system
+root    DEBUG   Checking for the right record
+root    DEBUG   Checking record 1
+root    DEBUG   Checking name
+root    DEBUG   Not the right record
+root    DEBUG   Checking record 2
+root    DEBUG   checking name
+root    DEBUG   Name checks, checking phone number
+root    DEBUG   Phone number checks, VALID record!
+root    DEBUG   Returning record 2
+</pre></div>
+</div>
+<p>Into something like this:</p>
+<div class="highlight-python"><div class="highlight"><pre>root    DEBUG   Loading system
+root    DEBUG       Checking for the right record
+root    DEBUG           Checking record 1
+root    DEBUG               Checking name
+root    DEBUG                   Not the right record
+root    DEBUG           Checking record 2
+root    DEBUG               checking name
+root    DEBUG                   Name checks, checking phone number
+root    DEBUG               Phone number checks, VALID record!
+root    DEBUG           Returning record 2
+</pre></div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to Python Log Indenter documentation</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="next chapter">Installation and initial setup</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="installation.html" title="Installation and initial setup"
+             >next</a> |</li>
+        <li><a href="#">Python Loger Indenter and Helper 0.9 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Dan Strohl.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

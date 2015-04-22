@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Basic usage &mdash; Python Loger Indenter and Helper 0.9 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Python Loger Indenter and Helper 0.9 documentation" href="index.html" />
+    <link rel="next" title="Advanced usage" href="advanced.html" />
+    <link rel="prev" title="Installation and initial setup" href="installation.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="advanced.html" title="Advanced usage"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation and initial setup"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Python Loger Indenter and Helper 0.9 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="basic-usage">
+<h1>Basic usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="loading">
+<h2>Loading<a class="headerlink" href="#loading" title="Permalink to this headline">¶</a></h2>
+<p>This subclasses a standard <a class="reference external" href="http://docs.python.org/library/logging.html#logging.LoggerAdapter" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">logging.LoggerAdapter</span></tt></a>, so you simply wrap your standard logger object in this and
+use it as normal.  The <a class="reference internal" href="api.html#python_log_indenter.IndentedLoggerAdapter" title="python_log_indenter.IndentedLoggerAdapter"><tt class="xref py py-class docutils literal"><span class="pre">IndentedLoggerAdapter</span></tt></a> has the same methods as the normal <a class="reference external" href="http://docs.python.org/library/logging.html#logging.Logger" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">logging.Logger</span></tt></a>,
+so you dont have to change any existing code.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">python_log_indenter</span> <span class="kn">import</span> <span class="n">IndentedLoggerAdapter</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">IndentedLoggerAdapter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="n">__name__</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>You can also chance the default number of spaces used for indenting, as well as chance the character used (see
+<a class="reference internal" href="advanced.html"><em>Advanced usage</em></a> for more information)</p>
+</div>
+<div class="section" id="changing-the-indent-level">
+<h2>Changing the indent level<a class="headerlink" href="#changing-the-indent-level" title="Permalink to this headline">¶</a></h2>
+<p>Once you have loaded the IndentedLoggerAdapter, you can change the level of the indents as you go using the .add / .sub
+methods:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">sub</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test3&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Will result in a log looking like:</p>
+<div class="highlight-python"><div class="highlight"><pre>INFO:root:test1
+INFO:root:    test2
+INFO:root:test3
+</pre></div>
+</div>
+<p>You can also add or subtract multiple levels by passing an int to <a class="reference internal" href="api.html#python_log_indenter.IndentedLoggerAdapter.add" title="python_log_indenter.IndentedLoggerAdapter.add"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.add()</span></tt></a>
+or <a class="reference internal" href="api.html#python_log_indenter.IndentedLoggerAdapter.sub" title="python_log_indenter.IndentedLoggerAdapter.sub"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.sub()</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test3&#39;</span><span class="p">)</span>
+
+<span class="go"># returning</span>
+<span class="go">INFO:root:test1</span>
+<span class="go">INFO:root:            test2</span>
+<span class="go">INFO:root:    test3</span>
+</pre></div>
+</div>
+<p>In addition, the <a class="reference internal" href="api.html#python_log_indenter.IndentedLoggerAdapter.add" title="python_log_indenter.IndentedLoggerAdapter.add"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.add()</span></tt></a> and <a class="reference internal" href="api.html#python_log_indenter.IndentedLoggerAdapter.sub" title="python_log_indenter.IndentedLoggerAdapter.sub"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.sub()</span></tt></a>:: are chainable (along
+with several of the other methods).  This means you can clean up your code to look like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test2&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sub</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test3&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="other-features">
+<h3>Other Features<a class="headerlink" href="#other-features" title="Permalink to this headline">¶</a></h3>
+<p>There are several other features included in this library, these are documented in the <a class="reference internal" href="advanced.html"><em>Advanced usage</em></a> section.  These
+including:</p>
+<dl class="docutils">
+<dt>Push/Pop:</dt>
+<dd>The ability to push or pop indent levels from a FILO queue.</dd>
+<dt>Memories:</dt>
+<dd>The ability to store indent levels into a named memory location.</dd>
+<dt>Formatable as fields:</dt>
+<dd>The ability to add the indent as a field to the <a class="reference external" href="http://docs.python.org/library/logging.html#logging.LogRecord" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">logging.LogRecord</span></tt></a> so that it can be included or not
+based on the format string and the handler.</dd>
+<dt>Shortcuts:</dt>
+<dd>Shortcut methods for many of the fields for quicker usage.</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Basic usage</a><ul>
+<li><a class="reference internal" href="#loading">Loading</a></li>
+<li><a class="reference internal" href="#changing-the-indent-level">Changing the indent level</a><ul>
+<li><a class="reference internal" href="#other-features">Other Features</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">Installation and initial setup</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="advanced.html"
+                        title="next chapter">Advanced usage</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/usage.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="advanced.html" title="Advanced usage"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation and initial setup"
+             >previous</a> |</li>
+        <li><a href="index.html">Python Loger Indenter and Helper 0.9 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Dan Strohl.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

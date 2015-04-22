@@ -1,0 +1,411 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Advanced usage &mdash; Python Loger Indenter and Helper 0.9 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Python Loger Indenter and Helper 0.9 documentation" href="index.html" />
+    <link rel="next" title="IndentedLoggerAdapter API" href="api.html" />
+    <link rel="prev" title="Basic usage" href="usage.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="api.html" title="IndentedLoggerAdapter API"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="usage.html" title="Basic usage"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Python Loger Indenter and Helper 0.9 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="advanced-usage">
+<h1>Advanced usage<a class="headerlink" href="#advanced-usage" title="Permalink to this headline">¶</a></h1>
+<p>the py:class:<cite>IndentedLoggerAdapter</cite> has several other methods and usages for advanced usage.</p>
+<div class="section" id="push-pop">
+<h2>Push / Pop<a class="headerlink" href="#push-pop" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="api.html#python_log_indenter.IndentedLoggerAdapter.push" title="python_log_indenter.IndentedLoggerAdapter.push"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.push()</span></tt></a> and <a class="reference internal" href="api.html#python_log_indenter.IndentedLoggerAdapter.pop" title="python_log_indenter.IndentedLoggerAdapter.pop"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.pop()</span></tt></a> allow you to add an indent level to a
+first in last out queue (FILO so that you can save an indent level and go back to it, even if you dont remember what it
+was.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test1&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">push</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test3&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test4&#39;</span><span class="p">)</span>
+
+<span class="go"># returning</span>
+
+<span class="go">INFO:root:test1</span>
+<span class="go">INFO:root:    test2</span>
+<span class="go">INFO:root:        test3</span>
+<span class="go">INFO:root:test4</span>
+</pre></div>
+</div>
+<p>This can be helpfull if you are changing indents across methods or functions:</p>
+<div class="highlight-python"><div class="highlight"><pre>def test1():
+log.info(&#39;entering test function&#39;).add()
+
+# do something ...
+
+log.push()  # save the location
+log.add().debug(&#39;entering the loop&#39;)
+for i in range(3):
+    sub_test(i)
+
+log.pop()    # getting the saved location
+log.debug(&#39;leaving function&#39;)
+
+def sub_test(cnt):
+    log.debug(&#39;sub_test_loop %d&#39;, cnt)
+
+    # do some loopy thing ...
+    log.a().debug(&#39;doing loopy stuff&#39;).s()
+
+# returns
+
+INFO:root:entering test function
+DEBUG:root:    entering the loop
+DEBUG:root:        sub_test_loop 0
+DEBUG:root:            doing loopy stuff
+DEBUG:root:        sub_test_loop 1
+DEBUG:root:            doing loopy stuff
+DEBUG:root:        sub_test_loop 2
+DEBUG:root:            doing loopy stuff
+DEBUG:root:    leaving the function
+</pre></div>
+</div>
+<p>Especially if you forget to return to the same level as before.  For example, if we run the above test1() function three
+times we would see:</p>
+<div class="highlight-python"><div class="highlight"><pre>INFO:root:entering test function
+DEBUG:root:    entering the loop
+DEBUG:root:        sub_test_loop 0
+DEBUG:root:            doing loopy stuff
+DEBUG:root:        sub_test_loop 1
+DEBUG:root:            doing loopy stuff
+DEBUG:root:        sub_test_loop 2
+DEBUG:root:            doing loopy stuff
+DEBUG:root:    leaving the function
+INFO:root:    entering test function
+DEBUG:root:        entering the loop
+DEBUG:root:            sub_test_loop 0
+DEBUG:root:                doing loopy stuff
+DEBUG:root:            sub_test_loop 1
+DEBUG:root:                doing loopy stuff
+DEBUG:root:            sub_test_loop 2
+DEBUG:root:                doing loopy stuff
+DEBUG:root:        leaving the function
+INFO:root:        entering test function
+DEBUG:root:            entering the loop
+DEBUG:root:                sub_test_loop 0
+DEBUG:root:                    doing loopy stuff
+DEBUG:root:                sub_test_loop 1
+DEBUG:root:                    doing loopy stuff
+DEBUG:root:                sub_test_loop 2
+DEBUG:root:                    doing loopy stuff
+DEBUG:root:            leaving the function
+</pre></div>
+</div>
+<p>if we had used <a class="reference internal" href="api.html#python_log_indenter.IndentedLoggerAdapter.push" title="python_log_indenter.IndentedLoggerAdapter.push"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.push()</span></tt></a> and <a class="reference internal" href="api.html#python_log_indenter.IndentedLoggerAdapter.pop" title="python_log_indenter.IndentedLoggerAdapter.pop"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.pop()</span></tt></a> at the beginning and end
+of the method, we would have cleared out the building indent.</p>
+<div class="section" id="push-pop-by-name">
+<h3>Push / Pop by name<a class="headerlink" href="#push-pop-by-name" title="Permalink to this headline">¶</a></h3>
+<p>You can also push and pop by name, this allows you to set a name while pushing an indent level, then return to that
+point in the queue without having to do multiple pop&#8217;s.</p>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre>def test1():
+log.push(&#39;test1_function&#39;)
+log.info(&#39;entering test function&#39;).add()
+
+# do something ...
+
+log.add().debug(&#39;entering the loop&#39;)
+log.push()
+for i in range(3):
+    sub_test(i)
+
+log.debug(&#39;leaving function&#39;)
+
+# This pops TWO levels from the queue, the first one (Just above the &quot;for / in&quot;) and returns to the first .push()
+log.pop(&#39;test1_function&#39;)
+
+def sub_test(cnt):
+    log.debug(&#39;sub_test_loop %d&#39;, cnt)
+
+    # do some loopy thing ...
+    log.a().debug(&#39;doing loopy stuff&#39;).s()
+
+# returns
+
+INFO:root:entering test function
+DEBUG:root:    entering the loop
+DEBUG:root:        sub_test_loop 0
+DEBUG:root:            doing loopy stuff
+DEBUG:root:        sub_test_loop 1
+DEBUG:root:            doing loopy stuff
+DEBUG:root:        sub_test_loop 2
+DEBUG:root:            doing loopy stuff
+DEBUG:root:    leaving the function
+</pre></div>
+</div>
+<p>In addition, you can pass the indent level to the .push() (without changing the current level), and you can pass the
+number of levels to go back to the .pop():</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test1&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test3&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">push</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test4&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test5&#39;</span><span class="p">)</span>
+
+<span class="go"># returning</span>
+
+<span class="go">INFO:root:test1</span>
+<span class="go">INFO:root:        test2</span>
+<span class="go">INFO:root:            test3</span>
+<span class="go">INFO:root:            test4</span>
+<span class="go">INFO:root:test4</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="memories">
+<h2>Memories<a class="headerlink" href="#memories" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="api.html#python_log_indenter.IndentedLoggerAdapter.mem_save" title="python_log_indenter.IndentedLoggerAdapter.mem_save"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.mem_save()</span></tt></a>, <a class="reference internal" href="api.html#python_log_indenter.IndentedLoggerAdapter.mem" title="python_log_indenter.IndentedLoggerAdapter.mem"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.mem()</span></tt></a>, and
+<a class="reference internal" href="api.html#python_log_indenter.IndentedLoggerAdapter.mem_clear" title="python_log_indenter.IndentedLoggerAdapter.mem_clear"><tt class="xref py py-meth docutils literal"><span class="pre">IndentedLoggerAdapter.mem_clear()</span></tt></a> You also can store indent levels using named storage locations, this allows
+you to setup indent levels for specific things and recall them as needed.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">mem_save</span><span class="p">(</span><span class="s">&#39;level1&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">mem_save</span><span class="p">(</span><span class="s">&#39;level2&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">mem_save</span><span class="p">(</span><span class="s">&#39;level3&#39;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test0&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">mem</span><span class="p">(</span><span class="s">&#39;level1&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">mem</span><span class="p">(</span><span class="s">&#39;level2&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test3&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">mem</span><span class="p">(</span><span class="s">&#39;level3&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test4&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">mem</span><span class="p">(</span><span class="s">&#39;level1&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test5&#39;</span><span class="p">)</span>
+
+<span class="go"># returning</span>
+
+<span class="go">INFO:root:test0</span>
+<span class="go">INFO:root:    test1</span>
+<span class="go">INFO:root:    test2</span>
+<span class="go">INFO:root:        test3</span>
+<span class="go">INFO:root:            test4</span>
+<span class="go">INFO:root:test5</span>
+</pre></div>
+</div>
+<p>If you do not pass an indent level to .mem_save() it will save the current level.</p>
+</div>
+<div class="section" id="formatting">
+<h2>Formatting<a class="headerlink" href="#formatting" title="Permalink to this headline">¶</a></h2>
+<p>By default the library will add the indent to the beginning of the message string, however if you want more control
+over the formatting of the log string, you can change the behaivior to set the indent_str as a
+<a class="reference external" href="http://docs.python.org/library/logging.html#logging.LogRecord" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">logging.LogRecord</span></tt></a> property, which can then be access by format strings set in the logging configuration.</p>
+<p>This allows you to use the indenting for console logging, but not for log files (or any other mix you want).  In
+addition, the indent_level is available as well if you want to pass that into the formatting string.</p>
+<p>These are available using the &#8220;indent_str&#8221; and &#8220;indent_level&#8221; keywords in the formatting string.</p>
+<p>As an example of a useless format:</p>
+<div class="highlight-python"><div class="highlight"><pre>logging.basicConfig(format=&#39;%(name)-8s: %(levelname)-8s : level %(indent_level) : indent &lt;%(indent_str)s&gt; : %(message)s&#39;)
+log = IndentedLoggerAdapter(logging.getLogger(), spaces=1, indent_char=&#39;.&#39;, auto_add=False)
+
+log.info(&#39;test1&#39;)
+log.add(3)
+log.info(&#39;test2&#39;)
+log.sub(2)
+log.info(&#39;test3&#39;)
+
+# returning
+root    : INFO     : level 0 : indent &lt;&gt; : test 1
+root    : INFO     : level 3 : indent &lt;            &gt; : test 1
+root    : INFO     : level 1 : indent &lt;    &gt; : test 1
+</pre></div>
+</div>
+<p>for better examples, see the logging cookbook on the <a class="reference external" href="http://docs.python.org/library/logging.html#module-logging" title="(in Python v2.7)"><tt class="xref py py-mod docutils literal"><span class="pre">logging</span></tt></a></p>
+</div>
+<div class="section" id="shortcuts">
+<h2>Shortcuts<a class="headerlink" href="#shortcuts" title="Permalink to this headline">¶</a></h2>
+<p>Shortcut methods have also been defined to assist in making these faster to enter (not that the names are very long to
+begin with).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Method</th>
+<th class="head">Shortcut</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>.indent_set()</td>
+<td>.i()</td>
+</tr>
+<tr class="row-odd"><td>.add()</td>
+<td>.a()</td>
+</tr>
+<tr class="row-even"><td>.sub()</td>
+<td>.s()</td>
+</tr>
+<tr class="row-odd"><td>.pop()</td>
+<td>.po()</td>
+</tr>
+<tr class="row-even"><td>.push()</td>
+<td>.pu()</td>
+</tr>
+<tr class="row-odd"><td>.mem()</td>
+<td>.m()</td>
+</tr>
+<tr class="row-even"><td>.mem_save()</td>
+<td>.ms()</td>
+</tr>
+<tr class="row-odd"><td>.mem_clear()</td>
+<td>.mc()</td>
+</tr>
+</tbody>
+</table>
+<p>Also, you can access memory location using dictionary methods, for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="p">[</span><span class="s">&#39;level1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="p">[</span><span class="s">&#39;level2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="p">[</span><span class="s">&#39;level3&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test0&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="p">[</span><span class="s">&#39;level1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="p">[</span><span class="s">&#39;level2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test3&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="p">[</span><span class="s">&#39;level3&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test4&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">log</span><span class="p">[</span><span class="s">&#39;level1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;test5&#39;</span><span class="p">)</span>
+
+<span class="go"># returning</span>
+
+<span class="go">INFO:root:test0</span>
+<span class="go">INFO:root:    test1</span>
+<span class="go">INFO:root:    test2</span>
+<span class="go">INFO:root:        test3</span>
+<span class="go">INFO:root:            test4</span>
+<span class="go">INFO:root:test5</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="changing-indent-size-and-indent-character">
+<h2>Changing indent size and indent character<a class="headerlink" href="#changing-indent-size-and-indent-character" title="Permalink to this headline">¶</a></h2>
+<p>When loading the <a class="reference internal" href="api.html#python_log_indenter.IndentedLoggerAdapter" title="python_log_indenter.IndentedLoggerAdapter"><tt class="xref py py-class docutils literal"><span class="pre">IndentedLoggerAdapter</span></tt></a> you can choose to set the size of the indent and the character used
+to create the indent.</p>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre>logging.basicConfig(level=logging.DEBUG)
+log = IndentedLoggerAdapter(logging.getLogger(), spaces=1, indent_char=&#39;.&#39;)
+
+log.a().info(&#39;test 1&#39;)
+log.s().error(&#39;test 2&#39;)
+log.a(3).debug(&#39;test 3&#39;)
+log.push().warning(&#39;test 4&#39;)
+log.a(1).critical(&#39;test 5&#39;)
+log.pop().critical(&#39;test 6&#39;)
+
+INFO:root:.test 1
+ERROR:root:test 2
+DEBUG:root:...test 3
+WARNING:root:...test 4
+CRITICAL:root:....test 5
+CRITICAL:root:...test 6
+</pre></div>
+</div>
+<p>See the <a class="reference internal" href="api.html"><em>IndentedLoggerAdapter API</em></a> section for information on the api for specific parameters.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Advanced usage</a><ul>
+<li><a class="reference internal" href="#push-pop">Push / Pop</a><ul>
+<li><a class="reference internal" href="#push-pop-by-name">Push / Pop by name</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#memories">Memories</a></li>
+<li><a class="reference internal" href="#formatting">Formatting</a></li>
+<li><a class="reference internal" href="#shortcuts">Shortcuts</a></li>
+<li><a class="reference internal" href="#changing-indent-size-and-indent-character">Changing indent size and indent character</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="usage.html"
+                        title="previous chapter">Basic usage</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="api.html"
+                        title="next chapter">IndentedLoggerAdapter API</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/advanced.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="api.html" title="IndentedLoggerAdapter API"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="usage.html" title="Basic usage"
+             >previous</a> |</li>
+        <li><a href="index.html">Python Loger Indenter and Helper 0.9 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Dan Strohl.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
