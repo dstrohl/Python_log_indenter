@@ -113,11 +113,15 @@ class NamedFiloQueue(object):
 
 class IndentHelperMixin(object):
 
-    def __init__(self, *args, spaces=4, indent_char=' ', **kwargs):
+    def __init__(self, *args, **kwargs):
         """
-        :param int spaces: Sets the number of spaces for each indent
-        :param str indent_char: Sets the character or string used for each indent space.
+        :keyword int spaces: Sets the number of spaces for each indent
+        :keyword str indent_char: Sets the character or string used for each indent space.
         """
+
+        spaces = kwargs.pop('spaces', 4)
+        indent_char = kwargs.pop('indent_char', ' ')
+
         self._current_indent = 0
         self._indent_spaces = spaces
         self._indent_char = indent_char
@@ -286,23 +290,13 @@ class IndentHelperMixin(object):
                    'Memories       : ', self._indent_mems,
                    'Push Queue     : \n', self._pop_queue.dump()]
 
-        return self.make_string(tmp_ret, separator='\n')
+        return '\n'.join(tmp_ret)
 
     '''
     ====================================
     printing methods
     ====================================
     '''
-
-    @staticmethod
-    def make_string(*args, separator=''):
-
-        tmp_ret = ''
-        for arg in args:
-            if tmp_ret != '':
-                tmp_ret += separator
-            tmp_ret += str(arg)
-        return tmp_ret
 
     def print(self, indent=None, indent_char=None, mem=None, pop=None, indent_len=None):
 
