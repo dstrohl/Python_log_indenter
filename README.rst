@@ -32,3 +32,7 @@ Into something like this::
     root    DEBUG               Phone number checks, VALID record!
     root    DEBUG           Returning record 2
 
+
+
+.. image:: https://travis-ci.org/dstrohl/Python_log_indenter.svg?branch=master
+    :target: https://travis-ci.org/dstrohl/Python_log_indenter
