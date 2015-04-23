@@ -1,16 +1,21 @@
 language: python
 python:
-  - "2.7"
-  - "3.2"
-  - "3.3"
-  - "3.4"
-# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-# install: PLEASE CHANGE ME
-# command to run tests, e.g. python setup.py test
-script:  nosetests
+- '2.7'
+- '3.2'
+- '3.3'
+- '3.4'
+script: nosetests
 notifications:
   email:
     recipients:
-      - dan@wjcg.net
+    - dan@wjcg.net
     on_success: always
     on_failure: always
+deploy:
+  provider: pypi
+  user: dstrohl
+  password:
+    secure: kmsglwkRYIE6YlPQCnRCuOQZL9zCKkHaB9AVrxjrecypxxJgffOFOtTo0QITPGMC0U8wKeCw2UbsZIiz1keBLJPZGXIhF6RRtEziTOV2S7wW354rv5wg9+9Km05UNoxgwR23J8hCn4p/KEZI4yTg1x9vfHxAcssV3UvZq01TnnE=
+  distributions: "sdist bdist_wheel"
+  on:
+    branch: release

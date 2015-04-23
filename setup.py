@@ -29,5 +29,4 @@ setup(
         'Topic :: System :: Logging'
     ],
     keywords='log LogAdapter indent logger logging extension plugin helper Logger readable'
-
 )
