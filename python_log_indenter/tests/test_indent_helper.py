@@ -26,39 +26,39 @@ class TestIndentedHelper(unittest.TestCase):
     
         self.assertEqual(str(sh.a()), '....')
 
-        self.assertEqual(sh.s().p(), '...')
+        self.assertEqual(sh.s().__, '...')
     
-        self.assertEqual(sh.print(), '...')
+        self.assertEqual(sh.indent(), '...')
     
         sh.push()
-        self.assertEqual(sh.a().print(), '....')
+        self.assertEqual(sh.a().indent(), '....')
         
-        self.assertEqual(sh.a(2).print(), '......')
+        self.assertEqual(sh.a(2).indent(), '......')
         
-        self.assertEqual(sh.pop().print(), '...')
+        self.assertEqual(sh.pop().indent(), '...')
     
-        self.assertEqual(sh.a().print(indent_char='-'), '----')
+        self.assertEqual(sh.a().indent(indent_char='-'), '----')
         
         sh.push('pop1')
         self.assertEqual(sh(), '....')
         
         self.assertEqual(sh(-1), '...')
     
-        self.assertEqual(sh.push(1).print(), '...')
+        self.assertEqual(sh.push(1).indent(), '...')
 
-        self.assertEqual(sh.pop().print(), '.')
+        self.assertEqual(sh.pop().indent(), '.')
 
         sh.a(6).push()
         sh.a(3).push()
 
-        self.assertEqual(sh.pop('pop1').p(), '....')
+        self.assertEqual(sh.pop('pop1').__, '....')
     
         sh['key1'] = 2
         self.assertEqual(sh(), '....')
 
         self.assertEqual(sh['key1'], '..')
 
-        self.assertEqual(sh.print(5), '.....')
+        self.assertEqual(sh.indent(5), '.....')
     
         self.assertEqual(sh(), '..')
 

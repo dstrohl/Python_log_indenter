@@ -174,7 +174,7 @@ class IndentHelperMixin(object):
         return self._current_indent
 
     @property
-    def indent(self):
+    def indent_level(self):
         """
         Returns the current indent level
 
@@ -298,7 +298,7 @@ class IndentHelperMixin(object):
     ====================================
     '''
 
-    def print(self, indent=None, indent_char=None, mem=None, pop=None, indent_len=None):
+    def indent(self, indent=None, indent_char=None, mem=None, pop=None, indent_len=None):
 
         if indent_len is None:
             indent_len = self._indent_spaces
@@ -320,7 +320,7 @@ class IndentHelperMixin(object):
         return tmp_ret
 
     def indent_str(self):
-        return self.print()
+        return self.indent()
 
     '''
     ====================================
@@ -340,7 +340,7 @@ class IndentHelperMixin(object):
                 elif indent in self._pop_queue:
                     self.pop(indent)
 
-        return self.print()
+        return self.indent()
 
     def __iadd__(self, other):
         self._current_indent += other
@@ -355,7 +355,7 @@ class IndentHelperMixin(object):
 
     def __getitem__(self, item):
         self.mem(item)
-        return self.print()
+        return self.indent()
 
     def __setitem__(self, key, value):
         self.mem_save(key, value)
@@ -372,8 +372,9 @@ class IndentHelperMixin(object):
     ====================================
     '''
 
-    def p(self, *args, **kwargs):
-        return self.print(*args, **kwargs)
+    @property
+    def __(self):
+        return self.indent()
 
     def i(self, indent=0):
         """
@@ -430,7 +431,7 @@ class IndentHelper(IndentHelperMixin):
         super(IndentHelper, self).__init__(*args, **kwargs)
 
     def __str__(self):
-        return self.print()
+        return self.indent()
 
     def __repr__(self):
         tmp_ret = 'SpaceHelper, level {} indent'.format(self._current_indent)
@@ -471,13 +472,13 @@ class IndentedLoggerAdapter(IndentHelperMixin, logging.LoggerAdapter):
 
     def process(self, msg, kwargs):
         if self._auto_add:
-            msg = str(self.p())+msg
+            msg = str(self.__)+msg
         else:
             if 'extra' not in kwargs:
                 kwargs['extra'] = {}
 
-            kwargs['extra']['indent_level'] = str(self.indent)
-            kwargs['extra']['indent_str'] = str(self.p())
+            kwargs['extra']['indent_level'] = str(self.indent_level)
+            kwargs['extra']['indent_str'] = str(self.__)
 
         return msg, kwargs
 
