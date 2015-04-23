@@ -1,4 +1,5 @@
-# Python_log_indenter
+Python Log Indenter Helper Class
+================================
 
 A python helper class that provides automatic indenting for logging.
 
