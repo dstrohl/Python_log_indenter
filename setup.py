@@ -13,7 +13,7 @@ setup(
     author='Dan Strohl',
     author_email='dan@wjcg.net',
     description='A python LoggerAdapter class that provides automatic indenting for logging.',
-    long_description=read(README.md),
+    long_description=read('README.rst'),
     tests_require=['testfixtures'],
     classifiers=[
         'Development Status :: 4 - Beta',
