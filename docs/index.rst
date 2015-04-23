@@ -48,6 +48,8 @@ Into something like this::
     root    DEBUG           Returning record 2
 
 
+
+
 Indices and tables
 ==================
 
@@ -55,3 +57,8 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
+.. note::  Please feel feel free to make bug reports at https://github.com/dstrohl/Python_log_indenter/issues as well
+    as forking the repo and issuing pull requests!
+
+.. image:: https://travis-ci.org/dstrohl/Python_log_indenter.svg?branch=master
+    :target: https://travis-ci.org/dstrohl/Python_log_indenter
