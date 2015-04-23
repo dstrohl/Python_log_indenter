@@ -1,4 +1,8 @@
+import os
 from setuptools import setup
+
+def read(fname):
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
     name='python_log_indenter',
@@ -9,6 +13,7 @@ setup(
     author='Dan Strohl',
     author_email='dan@wjcg.net',
     description='A python LoggerAdapter class that provides automatic indenting for logging.',
+    long_description=read(README.md),
     tests_require=['testfixtures'],
     classifiers=[
         'Development Status :: 4 - Beta',
